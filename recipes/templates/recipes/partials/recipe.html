@@ -3,41 +3,41 @@
         <img src="https://placehold.co/1280x720/269fe5/png" alt="Temporário">
     </div>
     <div class="recipe-title-container">
-        <h2 class="recipe-title">Lorem ipsum dolor sit amet!</h2>
+        <h2 class="recipe-title">{{ recipe.title }}</h2>
     </div>
 
     <div class="recipe-author">
         <span class="recipe-author-item">
             <i class="fa-solid fa-user"></i>
-            Guilherme Ramalho
+            {{ recipe.author.first_name }} {{ recipe.author.last_name }}
         </span>
         <span class="recipe-author-item">
             <i class="fa-solid fa-calendar-alt"></i>
-            01/05/2025 às 13:58
+            {{ recipe.created_at|date:"d/m/Y" }} às {{ recipe.created_at|date:"H:i:s" }}
         </span>
         <span class="recipe-author-item">
             <a href="/recipes/category/cafe-da-manha">
                 <i class="fa-solid fa-layer-group"></i>
-                <span>Café da manhã</span>
+                <span>{{ recipe.category.name }}</span>
             </a>
         </span> 
     </div>
 
     <div class="recipe-content">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique molestias tempore fugiat, voluptatum delectus non minima eos molestiae adipisci laboriosam corrupti nihil nam quae corporis repellendus, quis deleniti eveniet. Dolorem!</p>
+        <p>{{ recipe.description }}</p>
     </div>
 
     <div class="recipe-meta-container">
         <div class="recipe-meta recipe-preparation">
             <h3 class="recipe-meta-tittle"><i class="fa-solid fa-stopwatch"></i> Preparo</h3>
             <div class="recipe-meta-text">
-                0 Minutos
+                {{ recipe.preparation_time }} {{ recipe.preparation_time_unit }}
             </div>
         </div>
         <div class="recipe-meta recipe-servings">
             <h3 class="recipe-meta-tittle"><i class="fa-solid fa-pizza-slice"></i> Porções</h3>
             <div class="recipe-meta-text">
-                0 Porções
+                {{ recipe.servings }} {{ recipe.servings_unit }}
             </div>
         </div>
     </div>
