@@ -42,10 +42,18 @@
         </div>
     </div>
 
-    <footer class="recipe-footer">
-        <a href="/recipes/3/" class="recipe-read-more buton button-dark button-full-width">
-            <i class="fa-solid fa-eye"></i>
-            <span>ver mais...</span>
-        </a>
-    </footer>
+    {% if is_detail_page is not True %}
+        <footer class="recipe-footer">
+            <a href="/recipes/3/" class="recipe-read-more buton button-dark button-full-width">
+                <i class="fa-solid fa-eye"></i>
+                <span>ver mais...</span>
+            </a>
+        </footer>
+    {% endif %}
+
+    {% if is_detail_page is True %}
+        <div class="preparation-steps">
+            {{ recipe.preparation_steps|linebreaksbr }}
+        </div>
+    {% endif %}
 </div>
