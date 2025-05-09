@@ -27,7 +27,7 @@ class RecipeTestBase(TestCase):
         category_data=None,
         author_data=None,
         title='Recipe Title',
-        description="Recupe Description",
+        description="Recipe Description",
         slug='recipe-slug',
         preparation_time=10,
         preparation_time_unit='Minutos',
