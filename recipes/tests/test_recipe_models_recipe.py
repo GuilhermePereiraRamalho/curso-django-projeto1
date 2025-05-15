@@ -9,13 +9,13 @@ class RecipeModelTest(RecipeTestBase):
         self.recipe = self.make_recipe()
         return super().setUp()
 
-    def make_recipe_no_default(self, slug_content='recipe-slug-02'):
+    def make_recipe_no_default(self):
         recipe = Recipe.objects.create(
             category=self.make_category(name='Test Default Category'),
             author=self.make_author(username='newuser'),
             title='Recipe Title',
             description="Recipe Description",
-            slug=slug_content,
+            slug="recipe-slug-for-no-defaults",
             preparation_time=10,
             preparation_time_unit='Minutos',
             servings=5,
