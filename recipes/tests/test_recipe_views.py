@@ -1,5 +1,4 @@
 from django.urls import reverse, resolve
-from unittest import skip
 from recipes import views
 from .test_recipe_base import RecipeTestBase
 
@@ -22,7 +21,6 @@ class RecipeViewsTest(RecipeTestBase):
         response = self.client.get(reverse("recipes:home"))
         self.assertTemplateUsed(response, "recipes/pages/home.html")
 
-    @skip('A mensagem do porque estou pulando esse test')
     def test_recipe_home_template_shows_no_recipes_found_if_no_recipes(self):
         response = self.client.get(reverse("recipes:home"))
         self.assertIn(
@@ -124,3 +122,8 @@ class RecipeViewsTest(RecipeTestBase):
         )
 
         self.assertEqual(response.status_code, 404)
+
+    def test_recipe_search_uses_correct_view_function(self):
+        url = reverse("recipes:search")
+        resolved = resolve(url)
+        self.assertIs(resolved.func, views.search)
