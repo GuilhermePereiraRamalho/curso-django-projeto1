@@ -15,7 +15,7 @@ def home(request):
         current_page = int(request.GET.get('page', 1))
     except ValueError:
         current_page = 1
-        
+
     paginator = Paginator(recipes, 9)
     page_obj = paginator.get_page(current_page)
 
