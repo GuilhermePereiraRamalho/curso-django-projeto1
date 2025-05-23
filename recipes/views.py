@@ -3,7 +3,6 @@ import os
 from django.http import Http404
 from django.shortcuts import render, get_list_or_404, get_object_or_404
 from django.db.models import Q
-from django.contrib import messages
 
 from utils.pagination import make_pagination
 
@@ -22,9 +21,6 @@ def home(request):
         recipes,
         per_page=PER_PAGE
     )
-    messages.error(request, 'Epa, você foi pesquisar algo que eu vi.')
-    messages.success(request, 'Epa, você foi pesquisar algo que eu vi.')
-    messages.info(request, 'Epa, você foi pesquisar algo que eu vi.')
 
     return render(request, 'recipes/pages/home.html', context={
         'recipes': page_obj,
