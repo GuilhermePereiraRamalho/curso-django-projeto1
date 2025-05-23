@@ -23,6 +23,8 @@ def home(request):
         per_page=PER_PAGE
     )
     messages.error(request, 'Epa, você foi pesquisar algo que eu vi.')
+    messages.success(request, 'Epa, você foi pesquisar algo que eu vi.')
+    messages.info(request, 'Epa, você foi pesquisar algo que eu vi.')
 
     return render(request, 'recipes/pages/home.html', context={
         'recipes': page_obj,
