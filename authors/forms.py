@@ -47,13 +47,15 @@ class RegisterForm(forms.ModelForm):
             'one lowercase letter and one number. The length should be '
             'at least 8 characters.'
         ),
+        label='Password',
         validators=[
             strong_password
         ]
     )
     password2 = forms.CharField(
         required=True,
-        widget=forms.PasswordInput()
+        widget=forms.PasswordInput(),
+        label='Password2',
     )
 
     class Meta:
@@ -70,7 +72,6 @@ class RegisterForm(forms.ModelForm):
             'last_name': 'Last Name',
             'username': 'Username',
             'email': 'Email',
-            'password': 'Password'
         }
         help_texts = {
             'email': 'The email must be valid.'
@@ -83,18 +84,6 @@ class RegisterForm(forms.ModelForm):
         widgets = {
             'password': forms.PasswordInput()
         }
-
-    def clean_password(self):
-        data = self.cleaned_data.get('password')
-
-        if 'atenção' in data:
-            raise ValidationError(
-                'Não digite %(value)s no campo password',
-                code='invalid',
-                params={'value': 'atenção'}
-            )
-
-        return data
 
     def clean(self):
         cleaned_data = super().clean()
