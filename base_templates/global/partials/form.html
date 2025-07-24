@@ -15,6 +15,11 @@
 
                     {{ field.errors }}
                 </div>
+                {% if field.name == 'cover' and field.value.url %}
+                    <class class="span-2">
+                        <img src="{{ field.value.url }}" alt="Capa para {{ recipe.title }}">
+                    </class>
+                {% endif %}
             {% endfor %}
         </div>
         {% if form.errors %}
