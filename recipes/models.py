@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class Category(models.Model):
@@ -35,6 +36,9 @@ class Recipe(models.Model):
         default=None
     )
     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+    def get_absolute_url(self):
+        return reverse("recipes:recipe", args=(self.id,))
 
     def __str__(self):
         return self.title
