@@ -109,7 +109,7 @@ def dashboard_recipe_edit(request, id):
     ).first()
 
     if not recipe:
-        raise Http404
+        raise Http404()
 
     form = AuthorRecipeForm(
         data=request.POST or None,
