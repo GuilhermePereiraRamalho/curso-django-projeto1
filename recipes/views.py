@@ -27,6 +27,8 @@ class RecipeListViewBase(ListView):
             is_published=True,
         )
         qs = qs.select_related('author', 'category')
+        # apenas para entender (mais usado em manytomany)
+        # qs = qs.prefetch_related('author', 'category')
 
         return qs
 
