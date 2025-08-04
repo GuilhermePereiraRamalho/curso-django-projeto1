@@ -7,7 +7,7 @@ from django.views.generic import DetailView
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from django.shortcuts import render
-from django.core.exceptions import ObjectDoesNotExist
+# from django.core.exceptions import ObjectDoesNotExist
 
 from utils.pagination import make_pagination
 
@@ -28,10 +28,21 @@ def theory(request, *args, **kwargs):
     # )
     # recipes = Recipe.objects.get(id=1)
     # recipes = Recipe.objects.get(pk=1)
-    try:
-        recipes = Recipe.objects.get(pk=10000)
-    except ObjectDoesNotExist:
-        recipes = None
+    # try:
+    #     recipes = Recipe.objects.get(pk=10000)
+    # except ObjectDoesNotExist:
+    #     recipes = None
+
+    recipes = Recipe.objects.filter(
+        Q(
+            title__icontains='bolo',
+            id__gt=2,
+            is_published=True
+        ) |
+        Q(
+            id__gt=1000
+        )
+    )[:10]
 
     # print('RECIPE ENCONTRADA: ', recipes)
     # print(recipes[2:3])
