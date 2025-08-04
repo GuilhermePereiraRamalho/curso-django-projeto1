@@ -7,6 +7,7 @@ from django.views.generic import DetailView
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from django.shortcuts import render
+from django.core.exceptions import ObjectDoesNotExist
 
 from utils.pagination import make_pagination
 
@@ -16,9 +17,23 @@ PER_PAGE = int(os.environ.get('PER_PAGE', 6))
 
 
 def theory(request, *args, **kwargs):
-    recipes = Recipe.objects.all()
-    recipes = recipes.filter(title__icontains='Test')
+    # recipes = Recipe.objects.all()
+    # recipes = (
+    #     recipes
+    #     .filter(title__icontains='Test')
+    #     .filter(id=10000)
+    #     .order_by('-id')
+    #     .first()
+    #     .last()
+    # )
+    # recipes = Recipe.objects.get(id=1)
+    # recipes = Recipe.objects.get(pk=1)
+    try:
+        recipes = Recipe.objects.get(pk=10000)
+    except ObjectDoesNotExist:
+        recipes = None
 
+    # print('RECIPE ENCONTRADA: ', recipes)
     # print(recipes[2:3])
     # list(recipes)
 
