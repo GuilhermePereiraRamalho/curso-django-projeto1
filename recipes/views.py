@@ -1,7 +1,8 @@
 import os
 
 from django.http import Http404
-from django.db.models import Q, F
+from django.db.models import Q
+# from django.db.models import F
 from django.views.generic import ListView
 from django.views.generic import DetailView
 from django.http import JsonResponse
@@ -44,9 +45,15 @@ def theory(request, *args, **kwargs):
     #     )
     # )[:10]
 
-    recipes = Recipe.objects.filter(
-        id=F('author__id')
-    ).order_by('-id', 'title')[:1]
+    # recipes = Recipe.objects.filter(
+    #     id=F('author__id')
+    # ).order_by('-id', 'title')[:1]
+
+    recipes = Recipe.objects.values(
+        'id',
+        'title',
+        'author__username'
+    )[:10]
 
     # print('RECIPE ENCONTRADA: ', recipes)
     # print(recipes[2:3])
