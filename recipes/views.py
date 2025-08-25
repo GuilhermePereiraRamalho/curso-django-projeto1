@@ -1,9 +1,10 @@
 import os
 
 from django.http import Http404
-from django.db.models import Q, Value
-from django.db.models import F
-from django.db.models.functions import Concat
+from django.db.models import Q
+# from django.db.models import Value
+# from django.db.models import F
+# from django.db.models.functions import Concat
 from django.views.generic import ListView
 from django.views.generic import DetailView
 from django.http import JsonResponse
@@ -65,16 +66,7 @@ def theory(request, *args, **kwargs):
     #     'title'
     # )[:5]
 
-    recipes = Recipe.objects.all().annotate(
-        author_full_name=Concat(
-            F("author__first_name"),
-            Value(" "),
-            F("author__last_name"),
-            Value(" ("),
-            F("author__username"),
-            Value(")"),
-        )
-    )
+    recipes = Recipe.objects.get_published()
     number_of_recipes = recipes.aggregate(number=Count('id'))
 
     # print('RECIPE ENCONTRADA: ', recipes)
