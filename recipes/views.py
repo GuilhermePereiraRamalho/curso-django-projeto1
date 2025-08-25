@@ -8,6 +8,7 @@ from django.views.generic import DetailView
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from django.shortcuts import render
+from django.db.models.aggregates import Count
 # from django.core.exceptions import ObjectDoesNotExist
 
 from utils.pagination import make_pagination
@@ -54,16 +55,23 @@ def theory(request, *args, **kwargs):
     #     'title'
     # )
 
-    recipes = Recipe.objects.defer(
-        'is_published',
-    )
+    # recipes = Recipe.objects.defer(
+    #     'is_published',
+    # )
+
+    recipes = Recipe.objects.values(
+        'id',
+        'title'
+    )[:5]
+    number_of_recipes = recipes.aggregate(number=Count('id'))
 
     # print('RECIPE ENCONTRADA: ', recipes)
     # print(recipes[2:3])
     # list(recipes)
 
     context = {
-        'recipes': recipes
+        'recipes': recipes,
+        'number_of_recipes': number_of_recipes['number'],
     }
 
     return render(
