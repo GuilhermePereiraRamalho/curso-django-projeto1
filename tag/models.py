@@ -17,7 +17,7 @@ class Tag(models.Model):
         on_delete=models.CASCADE
     )
     # Representa o ID do objeto que queremos relacionar
-    object_id = models.CharField()
+    object_id = models.CharField(max_length=255)
     # Um campo que representa a relacao generica que conhece os 2 campos acima
     content_object = GenericForeignKey('content_type', 'object_id')
 
