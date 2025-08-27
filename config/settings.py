@@ -15,6 +15,11 @@ import os
 from django.contrib.messages import constants
 import mimetypes
 
+# Outra forma de carregar variaveis de ambiente
+# if os.environ.get('DEBUG', None) is None:
+#     from dotenv import load_dotenv
+#     load_dotenv()
+
 mimetypes.add_type("application/javascript", ".js", True)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
