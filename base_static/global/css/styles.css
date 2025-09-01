@@ -459,6 +459,12 @@ a {
     margin: var(--spacing-gutter-medium) 0;
 }
 
+.hidden-text{
+    visibility: hidden;
+    opacity: 0;
+    display: none;
+}
+
 @media (max-width: 600px) {
   .form-content-grid, 
   .main-content-list {
