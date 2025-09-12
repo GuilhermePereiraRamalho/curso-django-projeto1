@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from django.contrib.auth.models import User
 
-# from tag.models import Tag
+from tag.models import Tag
 
 
 class TagSerializer(serializers.Serializer):
@@ -28,6 +28,12 @@ class RecipeSerializer(serializers.Serializer):
     tag = TagSerializer(
         many=True,
         source='tags'
+    )
+    tag_links = serializers.HyperlinkedRelatedField(
+        many=True,
+        source='tags',
+        queryset=Tag.objects.all(),
+        view_name='recipes:recipe_api_v2_tag'
     )
 
     def get_preparation(self, recipe):
