@@ -39,9 +39,31 @@ class RecipeSerializer(serializers.ModelSerializer):
     tag_links = serializers.HyperlinkedRelatedField(
         many=True,
         source='tags',
-        queryset=Tag.objects.all(),
-        view_name='recipes:recipe_api_v2_tag'
+        view_name='recipes:recipes_api_v2_tag',
+        read_only=True,
     )
 
     def get_preparation(self, recipe):
         return f'{recipe.preparation_time} {recipe.preparation_time_unit}'
+
+    def validate(self, attrs):
+        super_validate = super().validate(attrs)
+
+        title = attrs.get('title')
+        description = attrs.get('description')
+
+        if title == description:
+            raise serializers.ValidationError({
+                'title': ['Title and Description must be different.'],
+                'description': ['Title and Description must be different.'],
+            })
+
+        return super_validate
+
+    def validate_title(self, value):
+        if len(value) < 5:
+            raise serializers.ValidationError(
+                'Title must have at least 5 chars.'
+            )
+
+        return value
