@@ -3,6 +3,8 @@ from rest_framework import serializers
 from tag.models import Tag
 from .models import Recipe
 
+from authors.validators import AuthorRecipeValidator
+
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,7 +27,13 @@ class RecipeSerializer(serializers.ModelSerializer):
             'tags',
             'public',
             'preparation',
-            'tag_links'
+            'tag_links',
+            'preparation_time',
+            'preparation_time_unit',
+            'servings',
+            'servings_unit',
+            'preparation_steps',
+            'cover'
         ]
 
     public = serializers.BooleanField(
@@ -48,22 +56,8 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         super_validate = super().validate(attrs)
-
-        title = attrs.get('title')
-        description = attrs.get('description')
-
-        if title == description:
-            raise serializers.ValidationError({
-                'title': ['Title and Description must be different.'],
-                'description': ['Title and Description must be different.'],
-            })
-
+        AuthorRecipeValidator(
+            data=attrs,
+            ErrorClass=serializers.ValidationError
+        )
         return super_validate
-
-    def validate_title(self, value):
-        if len(value) < 5:
-            raise serializers.ValidationError(
-                'Title must have at least 5 chars.'
-            )
-
-        return value
