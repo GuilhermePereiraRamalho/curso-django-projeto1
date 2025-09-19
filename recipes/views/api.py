@@ -2,9 +2,8 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework.generics import ListCreateAPIView
-from rest_framework.generics import RetrieveUpdateDestroyAPIView
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.viewsets import ModelViewSet
 
 from ..models import Recipe
 from tag.models import Tag
@@ -17,32 +16,26 @@ class RecipeAPIV2Pagination(PageNumberPagination):
     page_size = 1
 
 
-class RecipeAPIV2List(ListCreateAPIView):
+class RecipeAPIV2ViewSet(ModelViewSet):
     queryset = Recipe.objects.get_published()
     serializer_class = RecipeSerializer
     pagination_class = RecipeAPIV2Pagination
 
-
-class RecipeAPIV2Detail(RetrieveUpdateDestroyAPIView):
-    queryset = Recipe.objects.get_published()
-    serializer_class = RecipeSerializer
-    pagination_class = RecipeAPIV2Pagination
-
-    # def partial_update(self, request, *args, **kwargs):
-    #     pk = kwargs.get('pk')
-    #     recipe = self.get_queryset().filter(pk=pk).first()
-    #     serializer = RecipeSerializer(
-    #         instance=recipe,
-    #         data=request.data,
-    #         many=False,
-    #         context={'request': request},
-    #         partial=True
-    #     )
-    #     serializer.is_valid(raise_exception=True)
-    #     serializer.save()
-    #     return Response(
-    #         serializer.data
-    #     )
+    def partial_update(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        recipe = self.get_queryset().filter(pk=pk).first()
+        serializer = RecipeSerializer(
+            instance=recipe,
+            data=request.data,
+            many=False,
+            context={'request': request},
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            serializer.data
+        )
 
 
 @api_view()

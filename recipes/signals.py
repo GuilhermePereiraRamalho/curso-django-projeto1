@@ -7,10 +7,15 @@ import os
 
 
 def delete_cover(instance):
-    try:
-        os.remove(instance.cover.path)
-    except (ValueError, FileExistsError):
-        ...
+    if not instance.cover:
+        return
+
+    cover_path = instance.cover.path
+    if os.path.isfile(cover_path):
+        try:
+            os.remove(cover_path)
+        except PermissionError:
+            pass
 
 
 @receiver(pre_delete, sender=Recipe)
