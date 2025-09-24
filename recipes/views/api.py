@@ -25,6 +25,7 @@ class RecipeAPIV2ViewSet(ModelViewSet):
     serializer_class = RecipeSerializer
     pagination_class = RecipeAPIV2Pagination
     permission_classes = [IsAuthenticatedOrReadOnly, ]
+    http_method_names = ['get', 'post', 'patch', 'delete', 'head', 'options']
 
     def get_serializer_class(self):
         return super().get_serializer_class()
