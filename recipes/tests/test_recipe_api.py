@@ -5,6 +5,8 @@ from django.urls import reverse
 
 from recipes.tests.test_recipe_base import RecipeMixin
 
+from unittest.mock import patch
+
 
 class RecipeAPIV2Test(test.APITestCase, RecipeMixin):
     def test_recipe_api_list_returns_200_ok(self):
@@ -13,4 +15,18 @@ class RecipeAPIV2Test(test.APITestCase, RecipeMixin):
         self.assertEqual(
             response.status_code,
             status.HTTP_200_OK
+        )
+
+    @patch(
+            'recipes.views.api.RecipeAPIV2Pagination.page_size',
+            new=7
+        )
+    def test_recipe_api_list_loads_correct_number_of_recipes(self):
+        wanted_numbers_of_recipes = 7
+        self.make_recipe_in_batch(qtd=wanted_numbers_of_recipes)
+        response = self.client.get(reverse('recipes:recipes-api-list'))
+        qtd_of_loaded_recipes = len(response.data.get('results'))
+        self.assertEqual(
+            wanted_numbers_of_recipes,
+            qtd_of_loaded_recipes
         )

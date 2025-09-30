@@ -17,7 +17,7 @@ from ..permissions import IsOwner
 
 
 class RecipeAPIV2Pagination(PageNumberPagination):
-    page_size = 1
+    page_size = 3
 
 
 class RecipeAPIV2ViewSet(ModelViewSet):
