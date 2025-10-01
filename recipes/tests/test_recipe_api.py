@@ -9,8 +9,8 @@ from unittest.mock import patch
 
 
 class RecipeAPIV2Test(test.APITestCase, RecipeMixin):
-    def get_recipe_api_list(self):
-        api_url = reverse('recipes:recipes-api-list')
+    def get_recipe_api_list(self, reverse_result=None):
+        api_url = reverse_result or reverse('recipes:recipes-api-list')
         response = self.client.get(api_url)
         return response
 
@@ -46,4 +46,36 @@ class RecipeAPIV2Test(test.APITestCase, RecipeMixin):
         self.assertEqual(
             len(response.data.get('results')),
             1
+        )
+
+    @patch(
+        'recipes.views.api.RecipeAPIV2Pagination.page_size',
+        new=10
+    )
+    def test_recipe_api_list_loads_recipes_by_category_id(self):
+        # Create Categories
+        category_wanted = self.make_category(name='Category Wanted')
+        category_not_wanted = self.make_category(name='Category Not Wanted')
+
+        # Create 10 Recipes
+        recipes = self.make_recipe_in_batch(qtd=10)
+
+        # Put 9 recipes in the wanted category and 1 in the not wanted
+        for recipe in recipes:
+            recipe.category = category_wanted
+            recipe.save()
+        recipes[0].category = category_not_wanted
+        recipes[0].save()
+
+        # Action: get recipes by category wanted id
+        api_url = (
+            reverse('recipes:recipes-api-list') +
+            f'?category_id={category_wanted.id}'
+        )
+        response = self.get_recipe_api_list(reverse_result=api_url)
+
+        # We should only see recipes from the wanted category
+        self.assertEqual(
+            len(response.data.get('results')),
+            9
         )
