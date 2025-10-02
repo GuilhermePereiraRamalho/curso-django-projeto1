@@ -41,6 +41,17 @@ class RecipeAPIV2Test(test.APITestCase, RecipeMixin):
             status.HTTP_200_OK
         )
 
+    def get_recipe_raw_data(self):
+        return {
+            'title': 'New Recipe',
+            'description': 'New Recipe Description',
+            'preparation_time': 1,
+            'preparation_time_unit': 'Minutes',
+            'servings': 1,
+            'servings_unit': 'Person',
+            'preparation_steps': 'New Recipe Preparation Steps',
+        }
+
     @patch(
         'recipes.views.api.RecipeAPIV2Pagination.page_size',
         new=7
@@ -110,5 +121,14 @@ class RecipeAPIV2Test(test.APITestCase, RecipeMixin):
             status.HTTP_401_UNAUTHORIZED
         )
 
-    def test_jwt_login(self):
-        print(self.get_jwt_access_token())
+    def test_recipe_api_list_logged_user_can_create_recipe(self):
+        data = self.get_recipe_raw_data()
+        response = self.client.post(
+            self.get_recipe_reverse_url(),
+            data=data,
+            HTTP_AUTHORIZATION=f'Bearer {self.get_jwt_access_token()}'
+        )
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_201_CREATED
+        )
